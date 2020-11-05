@@ -14,6 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//查看扩展
 Route::get('/info',function (){
     phpinfo();
 });
+//微信开发者服务器接入
+Route::get('/wx','WxController@checkSignature');
+
