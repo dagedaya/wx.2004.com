@@ -52,9 +52,33 @@ class WxController extends Controller
                    //清除用户的信息
                 }
                 if(strtolower($data->MsgType) == "text"){
-                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
-                    echo "";
-                    die;
+//                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
+//                    echo "";
+//                    die;
+                    switch ($data->Content){
+                        case "天气";
+                            $category=1;
+                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
+                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gizp=n";
+                            $api=file_put_contents($url);
+                            $api=json_decode($api,true);
+                            $content = "天气状态：".$api['now']['text'].'
+                                风向：'.$api['now']['windDir'];
+                            break;
+                    }
+                    $toUser   = $data->FromUserName;
+                    $fromUser = $data->ToUserName;
+                    if($category==1){
+                        $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+                        $info = sprintf($template, $toUser, $fromUser, time(),'text', $content);
+                        return $info;
+                    }
                 }
             } else {
                 return false;
