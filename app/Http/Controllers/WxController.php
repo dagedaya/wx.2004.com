@@ -49,7 +49,8 @@ class WxController extends Controller
                     return $info;
                 }
                 if (strtolower($data->Event == 'unsubscribe')) {
-                   //清除用户的信息
+                    //清除用户的信息
+                }
             }
             if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
@@ -85,9 +86,8 @@ class WxController extends Controller
                     }
                 }
 
-            } else {
-                return false;
-            }
+        } else {
+            return false;
         }
     }
     //获取access_token并缓存
