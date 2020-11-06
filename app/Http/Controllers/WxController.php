@@ -58,12 +58,14 @@ class WxController extends Controller
                     switch ($data->Content){
                         case "天气":
                             $category=1;
-                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
-                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
-                            $api=file_get_contents($url);
-                            $api=json_decode($api,true);
-                            $content = "天气状态：".$api['now']['text'].'
-                                风向：'.$api['now']['windDir'];
+//                            $category=1;
+//                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
+//                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
+//                            $api=file_get_contents($url);
+//                            $api=json_decode($api,true);
+//                            $content = "天气状态：".$api['now']['text'].'
+//                                风向：'.$api['now']['windDir'];
+                            $content = 't';
                             break;
                     }
                     $toUser   = $data->FromUserName;
