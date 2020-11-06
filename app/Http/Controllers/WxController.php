@@ -53,7 +53,7 @@ class WxController extends Controller
                 }
                 if(strtolower($data->MsgType) == "text"){
                    file_put_contents('wx_text.log',$data,'FILE_APPEND');
-                    echo "$echostr";
+                    echo "";
                     die;
                 }
             } else {
