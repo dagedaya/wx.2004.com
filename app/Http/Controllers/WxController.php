@@ -20,6 +20,7 @@ class WxController extends Controller
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
         $tmpStr = sha1($tmpStr);
+
         if ($tmpStr == $signature) {
             //1.接收数据
             $xml_str = file_get_contents('php://input');
@@ -48,6 +49,7 @@ class WxController extends Controller
                     $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
                     return $info;
                 }
+                //取关
                 if (strtolower($data->Event == 'unsubscribe')) {
                     //清除用户的信息
                 }
@@ -68,7 +70,7 @@ class WxController extends Controller
                             break;
                         default:
                             $category = 1;
-                            $content  = "不知道你在说什么";
+                            $content  = "啊，亲，我疯了，你在说什么";
                             break;
                     }
                     $toUser   = $data->FromUserName;
@@ -85,7 +87,6 @@ class WxController extends Controller
                         return $info;
                     }
                 }
-
         } else {
             return false;
         }
