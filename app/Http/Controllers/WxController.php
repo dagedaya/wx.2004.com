@@ -24,11 +24,12 @@ class WxController extends Controller
             //1.接收数据
             $xml_str=file_get_contents('php://input');
             //记录日志
-            file_put_contents('wx_event.log',$xml_str,'FILE_APPEND');
-            echo "$echostr";
-            die;
-//            //2.把xml文本转换成php的数组或者对象
-//            $data=simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+//            file_put_contents('wx_event.log',$xml_str,'FILE_APPEND');
+//            echo "$echostr";
+//            die;
+            //2.把xml文本转换成php的数组或者对象
+            $data=simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+            dd($data);
 //            $xml="<xml>
 //  <ToUserName><![CDATA[toUser]]></ToUserName>
 //  <FromUserName><![CDATA[FromUser]]></FromUserName>
@@ -37,14 +38,6 @@ class WxController extends Controller
 //  <Event><![CDATA[subscribe]]></Event>
 //</xml>";
 //            echo $xml;
-            $xml_content="<xml>
-  <ToUserName><![CDATA[toUser]]></ToUserName>
-  <FromUserName><![CDATA[fromUser]]></FromUserName>
-  <CreateTime>12345678</CreateTime>
-  <MsgType><![CDATA[text]]></MsgType>
-  <Content><![CDATA[你好]]></Content>
-</xml>";
-            echo $xml_content;
         } else {
             return false;
         }
