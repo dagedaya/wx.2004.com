@@ -56,7 +56,7 @@ class WxController extends Controller
 //                    echo "";
 //                    die;
                     switch ($data->Content){
-                        case "天气";
+                        case "天气":
                             $category=1;
                             $key='4e268e1bc28d4d2a9223e11a55b9dab5';
                             $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gizp=n";
