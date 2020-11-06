@@ -21,7 +21,22 @@ class WxController extends Controller
         $tmpStr = implode($tmpArr);
         $tmpStr = sha1($tmpStr);
         if ($tmpStr == $signature) {
-            echo $echostr;
+            //1.接收数据
+            $xml_str=file_get_contents('php//:input');
+            //记录日志
+            file_put_contents('wx_event.log',$xml_str);
+            echo "";
+            die;
+//            //2.把xml文本转换成php的数组或者对象
+//            $data=simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+//            $xml="<xml>
+//  <ToUserName><![CDATA[toUser]]></ToUserName>
+//  <FromUserName><![CDATA[FromUser]]></FromUserName>
+//  <CreateTime>123456789</CreateTime>
+//  <MsgType><![CDATA[event]]></MsgType>
+//  <Event><![CDATA[subscribe]]></Event>
+//</xml>";
+//            echo $xml;
         } else {
             return false;
         }
