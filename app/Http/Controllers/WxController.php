@@ -50,8 +50,8 @@ class WxController extends Controller
                 }
                 if (strtolower($data->Event == 'unsubscribe')) {
                    //清除用户的信息
-                }
-                if(strtolower($data->MsgType) == "text"){
+            }
+            if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
 //                    echo "";
 //                    die;
@@ -82,6 +82,7 @@ class WxController extends Controller
                         return $info;
                     }
                 }
+
             } else {
                 return false;
             }
