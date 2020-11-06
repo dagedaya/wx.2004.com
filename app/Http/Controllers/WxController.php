@@ -22,15 +22,33 @@ class WxController extends Controller
         $tmpStr = sha1($tmpStr);
         if ($tmpStr == $signature) {
             //1.接收数据
-            $xml_str=file_get_contents('php://input');
+            $xml_str = file_get_contents('php://input');
             //记录日志
 //            file_put_contents('wx_event.log',$xml_str,'FILE_APPEND');
 //            echo "$echostr";
 //            die;
             //2.把xml文本转换成php的数组或者对象
-            $data=simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
-            dd($data);
-//            $xml="<xml>
+            $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+            //判断该数据包是否是订阅的事件推送
+            if (strtolower($data->MsgType) == "event") {
+                //关注
+                if (strtolower($data->Event == 'subscribe')) {
+                    //回复用户消息(纯文本格式)
+                    $toUser = $data->FromUserName;
+                    $fromUser = $data->ToUserName;
+                    $msgType = 'text';
+                    $content = '欢迎关注微信公众账号';
+                    $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+                    $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
+                    return $info;
+                }
+                //            $xml="<xml>
 //  <ToUserName><![CDATA[toUser]]></ToUserName>
 //  <FromUserName><![CDATA[FromUser]]></FromUserName>
 //  <CreateTime>123456789</CreateTime>
@@ -38,8 +56,9 @@ class WxController extends Controller
 //  <Event><![CDATA[subscribe]]></Event>
 //</xml>";
 //            echo $xml;
-        } else {
-            return false;
+            } else {
+                return false;
+            }
         }
     }
     //获取access_token并缓存
