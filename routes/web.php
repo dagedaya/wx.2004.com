@@ -22,4 +22,5 @@ Route::get('/info',function (){
 Route::match(['get','post'],'/wx','WxController@checkSignature');
 //获取access_token
 Route::get('/access_token','WxController@access_token');
-
+//测试
+Route::get('/weather','WxController@weather');

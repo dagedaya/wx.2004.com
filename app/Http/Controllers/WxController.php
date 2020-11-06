@@ -59,8 +59,8 @@ class WxController extends Controller
                         case "天气":
                             $category=1;
                             $key='4e268e1bc28d4d2a9223e11a55b9dab5';
-                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gizp=n";
-                            $api=file_put_contents($url);
+                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
+                            $api=file_get_contents($url);
                             $api=json_decode($api,true);
                             $content = "天气状态：".$api['now']['text'].'
                                 风向：'.$api['now']['windDir'];
@@ -76,7 +76,7 @@ class WxController extends Controller
                             <MsgType><![CDATA[%s]]></MsgType>
                             <Content><![CDATA[%s]]></Content>
                             </xml>";
-                        $info = sprintf($template, $toUser, $fromUser, time(),'text', $content);
+                        $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                         return $info;
                     }
                 }
@@ -104,5 +104,15 @@ class WxController extends Controller
             Redis::expire($key,3600);
         }
         echo "access_token".$token;
+    }
+    //测试天气
+    public function weather(){
+        $key='4e268e1bc28d4d2a9223e11a55b9dab5';
+        $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
+        $api=file_get_contents($url);
+        $api=json_decode($api,true);
+        $content = "天气状态：".$api['now']['text'].'
+                                风向：'.$api['now']['windDir'];
+        echo $content;
     }
 }
