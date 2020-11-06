@@ -37,6 +37,14 @@ class WxController extends Controller
 //  <Event><![CDATA[subscribe]]></Event>
 //</xml>";
 //            echo $xml;
+            $xml_content="<xml>
+  <ToUserName><![CDATA[toUser]]></ToUserName>
+  <FromUserName><![CDATA[fromUser]]></FromUserName>
+  <CreateTime>12345678</CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[你好]]></Content>
+</xml>";
+            echo $xml_content;
         } else {
             return false;
         }
