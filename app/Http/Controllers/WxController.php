@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\Redis;
 
 class WxController extends Controller
 {
+    //测试
+    public function test(){
+        $toUser="abc";
+        $token=$this->access_token();
+//        echo $token;die;
+      $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
+        echo $url;
+    }
     //微信接入
     public function checkSignature(Request $request)
     {
@@ -111,7 +119,7 @@ class WxController extends Controller
         $token=Redis::get($key);
         if($token){
             //有缓存
-            echo $token;
+//            echo $token;
         }else{
 //            echo "无缓存";
             $url= "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSECRET')."";
@@ -123,7 +131,7 @@ class WxController extends Controller
             //设置过期时间
             Redis::expire($key,3600);
         }
-        echo $token;
+        return $token;
     }
     //测试
     public function weather(){
