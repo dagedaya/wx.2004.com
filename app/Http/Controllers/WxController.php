@@ -66,7 +66,7 @@ class WxController extends Controller
                         'province'=>$users['province'],
                         'language'=>$users['language'],
                     ];
-                    UserInfoModel::insert($data);
+                    WXUserModel::insert($data);
                     //%s代表字符串(发送信息)
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
