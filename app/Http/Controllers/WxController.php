@@ -52,8 +52,8 @@ class WxController extends Controller
                     $token=$this->access_token();
                     $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
                     file_put_contents('user_access.log',$url);
-//                    $user=file_get_contents($url);
-//                    $users=json_decode($user,true);
+                    $user=file_get_contents($url);
+                    $users=json_decode($user,true);
 
                     //%s代表字符串
                     $template = "<xml>
