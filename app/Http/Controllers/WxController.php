@@ -53,18 +53,18 @@ class WxController extends Controller
                     $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
                     file_put_contents('user_access.log',$url);
                     $user=file_get_contents($url);
-                    $users=json_decode($user,true);
-//                    file_put_contents('user_access.log1',$users.'\r\n',FILE_APPEND);
+                    $user=json_decode($user,true);
+//                    file_put_contents('user_access.log1',$user.'\r\n',FILE_APPEND);
 //                    die;
                     $data=[
-                        'subscribe'=>$users['subscribe'],
-                        'openid'=>$users['openid'],
-                        'nickname'=>$users['nickname'],
-                        'sex'=>$users['sex'],
-                        'city'=>$users['city'],
-                        'country'=>$users['country'],
-                        'province'=>$users['province'],
-                        'language'=>$users['language'],
+                        'subscribe'=>$user['subscribe'],
+                        'openid'=>$user['openid'],
+                        'nickname'=>$user['nickname'],
+                        'sex'=>$user['sex'],
+                        'city'=>$user['city'],
+                        'country'=>$user['country'],
+                        'province'=>$user['province'],
+                        'language'=>$user['language'],
                     ];
                     WxUserModel::insert($data);
                     //%s代表字符串(发送信息)
