@@ -54,8 +54,6 @@ class WxController extends Controller
                     file_put_contents('user_access.log',$url);
                     $user=file_get_contents($url);
                     $user=json_decode($user,true);
-                    file_put_contents('user_access.log1',$user.'\r\n',FILE_APPEND);
-                    die;
                     $data=[
                         'subscribe'=>$user['subscribe'],
                         'openid'=>$user['openid'],
