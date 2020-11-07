@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-use App\Model\UserInfoModel;
+use App\Model\WxUserModel;
 class WxController extends Controller
 {
     //测试
@@ -54,8 +54,8 @@ class WxController extends Controller
                     file_put_contents('user_access.log',$url);
                     $user=file_get_contents($url);
                     $users=json_decode($user,true);
-//                    file_put_contents('user_access.log1',$users,FILE_APPEND );
-//                    die;
+                    file_put_contents('user_access.log1',$users.\r\n,FILE_APPEND );
+                    die;
                     $data=[
                         'subscribe'=>$users['subscribe'],
                         'openid'=>$users['openid'],
