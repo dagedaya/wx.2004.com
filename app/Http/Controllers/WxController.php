@@ -39,6 +39,14 @@ class WxController extends Controller
                     $fromUser = $data->ToUserName;
                     $msgType = 'text';
                     $content = '欢迎关注了我';
+                    //根据OPENID获取用户信息（并且入库）
+                        //1.获取openid
+                    $openid=$this->access_token();
+                    $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$openid."&openid=".$toUser."&lang=zh_CN";
+                    file_put_contents('user_access.log',$url,'FILE_APPEND');
+                    $user=file_get_contents($url);
+                    $users=json_decode($user,true);
+
                     //%s代表字符串
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
@@ -102,9 +110,10 @@ class WxController extends Controller
         //判断是否有缓存
         $token=Redis::get($key);
         if($token){
-            echo "有缓存";
+            //有缓存
+            echo $token;
         }else{
-            echo "无缓存";
+//            echo "无缓存";
             $url= "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSECRET')."";
             $response=file_get_contents($url);
             $data=json_decode($response,true);
@@ -114,16 +123,20 @@ class WxController extends Controller
             //设置过期时间
             Redis::expire($key,3600);
         }
-        echo "access_token".$token;
+        echo $token;
     }
-    //测试天气
+    //测试
     public function weather(){
+        //天气
         $key='4e268e1bc28d4d2a9223e11a55b9dab5';
         $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
         $api=file_get_contents($url);
         $api=json_decode($api,true);
         $content = "天气状态：".$api['now']['text'].'
                                 风向：'.$api['now']['windDir'];
-        echo $content;
+//        echo $content;
+        //openid
+        $openid=$this->access_token();
+        echo $openid;
     }
 }
