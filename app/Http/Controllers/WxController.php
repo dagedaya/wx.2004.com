@@ -71,7 +71,7 @@ class WxController extends Controller
                             break;
                          case "时间";
                             $category=1;
-                            $content=date('Y-m-d H:s:i',time());
+                            $content=date('Y-m-d H:i:s',time());
                             break;
                         default:
                             $category = 1;
