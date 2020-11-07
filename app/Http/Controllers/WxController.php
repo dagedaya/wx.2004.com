@@ -41,9 +41,9 @@ class WxController extends Controller
                     $content = '欢迎关注了我';
                     //根据OPENID获取用户信息（并且入库）
                         //1.获取openid
-                    $openid=$this->access_token();
-                    $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$openid."&openid=".$toUser."&lang=zh_CN";
-                    file_put_contents('user_access.log',$url,'FILE_APPEND');
+//                    $openid=$this->access_token();
+//                    $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$openid."&openid=".$toUser."&lang=zh_CN";
+//                    file_put_contents('user_access.log',$url,'FILE_APPEND');
 //                    $user=file_get_contents($url);
 //                    $users=json_decode($user,true);
 
