@@ -38,7 +38,8 @@ class WxController extends Controller
                     $toUser = $data->FromUserName;
                     $fromUser = $data->ToUserName;
                     $msgType = 'text';
-                    $content = '欢迎关注微信公众账号';
+                    $content = '欢迎关注了我';
+                    //%s代表字符串
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
                             <FromUserName><![CDATA[%s]]></FromUserName>
@@ -67,6 +68,10 @@ class WxController extends Controller
                             $api=json_decode($api,true);
                             $content = "天气状态：".$api['now']['text'].'
                                 风向：'.$api['now']['windDir'];
+                            break;
+                         case "时间";
+                            $category=1;
+                            $content=date('Y-m-d H:s:i',time());
                             break;
                         default:
                             $category = 1;
