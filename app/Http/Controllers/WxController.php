@@ -54,7 +54,7 @@ class WxController extends Controller
                     file_put_contents('user_access.log',$url);
                     $user=file_get_contents($url);
                     $users=json_decode($user,true);
-
+                    file_put_contents('user_access.logs',$users,'FILE_APPEND');
                     //%s代表字符串
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
