@@ -88,31 +88,6 @@ class WxController extends Controller
                     //清除用户的信息
                 }
             }
-            if(strtolower($data->MsgType)=='image'){
-                $media=MediaModel::where('media_url',$data->PicUrl)->first();
-                if(empty($media)){
-                    $data=[
-                        'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-                        'media_type'=>'image',//类型为图片
-                        'add_time'=>time(),
-                        'openid'=>$data->FromUserName,
-                    ];
-                    MediaModel::insert($data);
-                    $content="图片已存到素材库";
-                }else{
-                    $content="素材库已经有了";
-                }
-                //%s代表字符串(发送信息)
-                $template = "<xml>
-                            <ToUserName><![CDATA[%s]]></ToUserName>
-                            <FromUserName><![CDATA[%s]]></FromUserName>
-                            <CreateTime>%s</CreateTime>
-                            <MsgType><![CDATA[%s]]></MsgType>
-                            <Content><![CDATA[%s]]></Content>
-                            </xml>";
-                $info = sprintf($template,time(),$content);
-                return $info;
-            }
             if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
 //                    echo "";
@@ -149,10 +124,40 @@ class WxController extends Controller
                         $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                         return $info;
                     }
+                if(strtolower($data->MsgType)=='image'){
+                    $media=MediaModel::where('media_url',$data->PicUrl)->first();
+                    if(empty($media)){
+                        $data=[
+                            'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+                            'media_type'=>'image',//类型为图片
+                            'add_time'=>time(),
+                            'openid'=>$data->FromUserName,
+                        ];
+                        MediaModel::insert($data);
+                        $content="图片已存到素材库";
+                    }else{
+                        $content="素材库已经有了";
+                    }
+                    $result=$this->text($toUser,$fromUser,$content);
+                    return $result;
                 }
+            }
         } else {
             return false;
         }
+    }
+    // 1 回复文本消息
+    public function text($toUser,$fromUser,$content)
+    {
+        $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
+        return $info;
     }
     //获取access_token并缓存
     public function access_token(){
