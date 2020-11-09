@@ -139,7 +139,7 @@ class WxController extends Controller
                 }else{
                     $content="素材库已经有了";
                 }
-                $result=$this->text($content);
+                $result=$this->text($toUser,$fromUser,$content);
                 return $result;
             }
 
