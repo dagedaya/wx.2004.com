@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WxUserModel;
 use GuzzleHttp\Client;
+use App\Model\MediaModel;
 class WxController extends Controller
 {
     //测试
@@ -71,7 +72,21 @@ class WxController extends Controller
                         ];
                         $data=WxUserModel::insert($data);
                     }
-
+                    if(strtolower($data->MsgType)=='image'){
+                        $media=MediaModel::where('media_url',$data->PicUrl)->first();
+                        if(empty($media)){
+                            $data=[
+                                'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+                                'media_type'=>'image',//类型为图片
+                                'add_time'=>time(),
+                                'openid'=>$data->FromUserName,
+                            ];
+                            MediaModel::insert($data);
+                            $content="图片已存到素材库";
+                        }else{
+                            $content="素材库已经有了";
+                        }
+                    }
                     //%s代表字符串(发送信息)
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
