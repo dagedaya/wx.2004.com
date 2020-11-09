@@ -98,15 +98,17 @@ class WxController extends Controller
                     switch ($data->Content){
                         case "天气":
                             $category=1;
-                            $url="http://api.k780.com/?app=weather.today&weaid=1&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
+                            $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
                             $weather=file_get_contents($url);
                             $weather=json_decode($weather,true);
                             if($weather['success']){
-                                $content='日期：'.$weather['result']['days'].$weather['result']['week'].'当日温度：'.$weather['result']['temperature'].'天气：'.$weather['result']['weather'].'风向：'.$weather['result']['wind'];
+                                $content="";
+                                foreach ($weather['result'] as $v){
+                                    $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
+                                }
                             }
-                            
-
-
+                            Log::info('===='.$content);
+                            return $content;
 //                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
 //                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
 //                            $api=file_get_contents($url);
