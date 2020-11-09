@@ -41,54 +41,56 @@ class WxController extends Controller
             //2.把xml文本转换成php的数组或者对象
             $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
             //判断该数据包是否是订阅的事件推送
-            if (strtolower($data->MsgType) == "event") {
-                //关注
-                if (strtolower($data->Event == 'subscribe')) {
-                    //回复用户消息(纯文本格式)
-                    $toUser = $data->FromUserName;//openid
-                    $fromUser = $data->ToUserName;
-                    $msgType = 'text';
-                    $content = '欢迎关注了我';
-                    //根据OPENID获取用户信息（并且入库）
+            if(!empty($data)){
+                $toUser = $data->FromUserName;//openid
+                $fromUser = $data->ToUserName;
+                if (strtolower($data->MsgType) == "event") {
+                    //关注
+                    if (strtolower($data->Event == 'subscribe')) {
+                        //回复用户消息(纯文本格式)
+
+                        $msgType = 'text';
+                        $content = '欢迎关注了我';
+                        //根据OPENID获取用户信息（并且入库）
                         //1.获取openid
-                    $token=$this->access_token();
-                    $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-                    file_put_contents('user_access.log',$url);
-                    $user=file_get_contents($url);
-                    $user=json_decode($user,true);
-                    $wxuser=WxUserModel::where('openid',$user['openid'])->first();
-                    if(!empty($wxuser)){
-                        $content="欢迎回来";
-                    }else{
-                        $data=[
-                            'subscribe'=>$user['subscribe'],
-                            'openid'=>$user['openid'],
-                            'nickname'=>$user['nickname'],
-                            'sex'=>$user['sex'],
-                            'city'=>$user['city'],
-                            'country'=>$user['country'],
-                            'province'=>$user['province'],
-                            'language'=>$user['language'],
-                        ];
-                        $data=WxUserModel::insert($data);
-                    }
-                    //%s代表字符串(发送信息)
-                    $template = "<xml>
+                        $token=$this->access_token();
+                        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
+                        file_put_contents('user_access.log',$url);
+                        $user=file_get_contents($url);
+                        $user=json_decode($user,true);
+                        $wxuser=WxUserModel::where('openid',$user['openid'])->first();
+                        if(!empty($wxuser)){
+                            $content="欢迎回来";
+                        }else{
+                            $data=[
+                                'subscribe'=>$user['subscribe'],
+                                'openid'=>$user['openid'],
+                                'nickname'=>$user['nickname'],
+                                'sex'=>$user['sex'],
+                                'city'=>$user['city'],
+                                'country'=>$user['country'],
+                                'province'=>$user['province'],
+                                'language'=>$user['language'],
+                            ];
+                            $data=WxUserModel::insert($data);
+                        }
+                        //%s代表字符串(发送信息)
+                        $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
                             <FromUserName><![CDATA[%s]]></FromUserName>
                             <CreateTime>%s</CreateTime>
                             <MsgType><![CDATA[%s]]></MsgType>
                             <Content><![CDATA[%s]]></Content>
                             </xml>";
-                    $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
-                    return $info;
+                        $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
+                        return $info;
+                    }
+                    //取关
+                    if (strtolower($data->Event == 'unsubscribe')) {
+                        //清除用户的信息
+                    }
                 }
-                //取关
-                if (strtolower($data->Event == 'unsubscribe')) {
-                    //清除用户的信息
-                }
-            }
-            if(strtolower($data->MsgType) == "text"){
+                if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
 //                    echo "";
 //                    die;
@@ -102,7 +104,7 @@ class WxController extends Controller
                             $content = "天气状态：".$api['now']['text'].'
                                 风向：'.$api['now']['windDir'];
                             break;
-                         case "时间";
+                        case "时间";
                             $category=1;
                             $content=date('Y-m-d H:i:s',time());
                             break;
@@ -124,24 +126,26 @@ class WxController extends Controller
                         $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                         return $info;
                     }
-            }
-            if(strtolower($data->MsgType)=='image'){
-                $media=MediaModel::where('media_url',$data->PicUrl)->first();
-                if(empty($media)){
-                    $data=[
-                        'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-                        'media_type'=>'image',//类型为图片
-                        'add_time'=>time(),
-                        'openid'=>$data->FromUserName,
-                    ];
-                    MediaModel::insert($data);
-                    $content="图片已存到素材库";
-                }else{
-                    $content="素材库已经有了";
                 }
-                $result=$this->text($toUser,$fromUser,$content);
-                return $result;
+                if(strtolower($data->MsgType)=='image'){
+                    $media=MediaModel::where('media_url',$data->PicUrl)->first();
+                    if(empty($media)){
+                        $data=[
+                            'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+                            'media_type'=>'image',//类型为图片
+                            'add_time'=>time(),
+                            'openid'=>$data->FromUserName,
+                        ];
+                        MediaModel::insert($data);
+                        $content="图片已存到素材库";
+                    }else{
+                        $content="素材库已经有了";
+                    }
+                    $result=$this->text($toUser,$fromUser,$content);
+                    return $result;
+                }
             }
+
 
         } else {
             return false;
