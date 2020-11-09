@@ -98,17 +98,7 @@ class WxController extends Controller
                     switch ($data->Content){
                         case "天气":
                             $category=1;
-                            $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
-                            $weather=file_get_contents($url);
-                            $weather=json_decode($weather,true);
-                            if($weather['success']){
-                                $content="";
-                                foreach ($weather['result'] as $v){
-                                    $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
-                                }
-                            }
-                            Log::info('===='.$content);
-                            return $content;
+                            $content=$this->weather();
 //                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
 //                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
 //                            $api=file_get_contents($url);
@@ -200,6 +190,20 @@ class WxController extends Controller
             Redis::expire($key,3600);
         }
         return $token;
+    }
+    //天气
+    public function weather(){
+        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=beijing&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
+        $weather=file_get_contents($url);
+        $weather=json_decode($weather,true);
+        if($weather['success']){
+            $content="";
+            foreach ($weather['result'] as $v){
+                $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
+            }
+        }
+        Log::info('===='.$content);
+        return $content;
     }
     //上传素材
     public function guzzle2(){
