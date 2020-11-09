@@ -102,13 +102,10 @@ class WxController extends Controller
                             $weather=file_get_contents($url);
                             $weather=json_decode($weather,true);
                             if($weather['success']){
-                                foreach ($weather['result'] as $v){
-                                    $content='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
-                                }
+                                $content='日期：'.$weather['result']['days'].$weather['result']['week'].'当日温度：'.$weather['result']['temperature'].'天气：'.$weather['result']['weather'].'风向：'.$weather['result']['wind'];
                             }
-                            if(is_array($weather['result'])){
-                                return $content;
-                            }
+                            
+
 
 //                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
 //                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";

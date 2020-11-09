@@ -41,5 +41,6 @@ Route::post('test4','WxController@test4');//post(raw)
 Route::prefix('/test')->group(function (){
     Route::get('/guzzle1','TestController@guzzle1');//使用guzzl发送get请求
     Route::get('/guzzle2','TestController@guzzle2');//上传素材
+    Route::get('/weather','TestController@weather');//天气780
 });
 
