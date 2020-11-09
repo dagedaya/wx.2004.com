@@ -72,21 +72,6 @@ class WxController extends Controller
                         ];
                         $data=WxUserModel::insert($data);
                     }
-                    if(strtolower($data->MsgType)=='image'){
-                        $media=MediaModel::where('media_url',$data->PicUrl)->first();
-                        if(empty($media)){
-                            $data=[
-                                'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-                                'media_type'=>'image',//类型为图片
-                                'add_time'=>time(),
-                                'openid'=>$data->FromUserName,
-                            ];
-                            MediaModel::insert($data);
-                            $content="图片已存到素材库";
-                        }else{
-                            $content="素材库已经有了";
-                        }
-                    }
                     //%s代表字符串(发送信息)
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
@@ -102,6 +87,31 @@ class WxController extends Controller
                 if (strtolower($data->Event == 'unsubscribe')) {
                     //清除用户的信息
                 }
+            }
+            if(strtolower($data->MsgType)=='image'){
+                $media=MediaModel::where('media_url',$data->PicUrl)->first();
+                if(empty($media)){
+                    $data=[
+                        'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+                        'media_type'=>'image',//类型为图片
+                        'add_time'=>time(),
+                        'openid'=>$data->FromUserName,
+                    ];
+                    MediaModel::insert($data);
+                    $content="图片已存到素材库";
+                }else{
+                    $content="素材库已经有了";
+                }
+                //%s代表字符串(发送信息)
+                $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+                $info = sprintf($template,time(),$content);
+                return $info;
             }
             if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
