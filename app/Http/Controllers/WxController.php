@@ -98,7 +98,7 @@ class WxController extends Controller
                     switch ($data->Content){
                         case "天气":
                             $category=1;
-                            $content=$this->weather();
+                            $content=$this->weather1();
 //                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
 //                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
 //                            $api=file_get_contents($url);
@@ -192,7 +192,7 @@ class WxController extends Controller
         return $token;
     }
     //天气
-    public function weather(){
+    public function weather1(){
         $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=beijing&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
         $weather=file_get_contents($url);
         $weather=json_decode($weather,true);
