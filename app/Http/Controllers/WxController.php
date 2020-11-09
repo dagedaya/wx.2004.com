@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Model\WxUserModel;
+use GuzzleHttp\Client;
 class WxController extends Controller
 {
     //测试
@@ -43,7 +44,7 @@ class WxController extends Controller
                 //关注
                 if (strtolower($data->Event == 'subscribe')) {
                     //回复用户消息(纯文本格式)
-                    $toUser = $data->FromUserName;
+                    $toUser = $data->FromUserName;//openid
                     $fromUser = $data->ToUserName;
                     $msgType = 'text';
                     $content = '欢迎关注了我';
@@ -135,12 +136,17 @@ class WxController extends Controller
         $token=Redis::get($key);
         if($token){
             //有缓存
+//            echo "有缓存";
 //            echo $token;
         }else{
 //            echo "无缓存";
             $url= "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSECRET')."";
-            $response=file_get_contents($url);
-            $data=json_decode($response,true);
+//            $response=file_get_contents($url);
+            //使用guzzl发送get请求
+            $client=new Client();//实例化客户端
+            $response=$client->request('GET',$url,['verify'=>false]);//发起请求并接收响应
+            $json_str=$response->getBody();//服务器的响应数据
+            $data=json_decode($json_str,true);
             $token=$data['access_token'];
             //存到redis中
             Redis::set($key,$token);
@@ -149,6 +155,35 @@ class WxController extends Controller
         }
         return $token;
     }
+    //上传素材
+    public function guzzle2(){
+        $access_token=$this->access_token();
+        $type="image";
+        $url="https://api.weixin.qq.com/cgi-bin/media/upload?access_token=".$access_token."&type=".$type." ";
+        $client=new Client();//实例化客户端
+        $response=$client->request('POST',$url,[
+            'verify'=>false,
+            'multipart'=>[
+                [
+                    'name'=>'media',
+                    'contents'=>fopen('大海.jpg','r')
+                ]   //上传的文件路径
+            ]
+        ]);  //发送请求并接收响应
+        $data=$response->getBody();//服务器的响应数据
+//        $media_id=json_decode($data,true);
+        echo $data;
+    }
+
+
+
+
+
+
+
+
+
+
     //测试
     public function weather(){
         //天气
@@ -163,21 +198,15 @@ class WxController extends Controller
         $openid=$this->access_token();
         echo $openid;
     }
-    //测试
-    public function openid(){
-        $openid='onun_5lLzel17JvjX1tQiJH40eno';
-        $openid=WxUserModel::where('openid',$openid)->first();
-        print_r($openid);
-    }
     //测试（postman）get
     public function test2(){
         print_r($_GET);
     }
-    //post(form-data)
+    //测试post(form-data)
     public function test3(){
         print_r($_POST);
     }
-    //post(raw)
+    //测试post(raw)
     public function test4(){
         $xml_str=file_get_contents('php://input');
         $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
