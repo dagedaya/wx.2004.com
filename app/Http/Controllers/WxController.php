@@ -106,7 +106,10 @@ class WxController extends Controller
                                     $content='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
                                 }
                             }
-                            return $content;
+                            if(is_array($weather['result'])){
+                                return $content;
+                            }
+
 //                            $key='4e268e1bc28d4d2a9223e11a55b9dab5';
 //                            $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
 //                            $api=file_get_contents($url);
