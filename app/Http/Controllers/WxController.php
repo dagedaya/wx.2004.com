@@ -54,17 +54,23 @@ class WxController extends Controller
                     file_put_contents('user_access.log',$url);
                     $user=file_get_contents($url);
                     $user=json_decode($user,true);
-                    $data=[
-                        'subscribe'=>$user['subscribe'],
-                        'openid'=>$user['openid'],
-                        'nickname'=>$user['nickname'],
-                        'sex'=>$user['sex'],
-                        'city'=>$user['city'],
-                        'country'=>$user['country'],
-                        'province'=>$user['province'],
-                        'language'=>$user['language'],
-                    ];
-                    WxUserModel::insert($data);
+                    $wxuser=WxUserModel::where('openid',$user['openid'])->first();
+                    if(!empty($wxuser)){
+                        $content="欢迎回来";
+                    }else{
+                        $data=[
+                            'subscribe'=>$user['subscribe'],
+                            'openid'=>$user['openid'],
+                            'nickname'=>$user['nickname'],
+                            'sex'=>$user['sex'],
+                            'city'=>$user['city'],
+                            'country'=>$user['country'],
+                            'province'=>$user['province'],
+                            'language'=>$user['language'],
+                        ];
+                        $data=WxUserModel::insert($data);
+                    }
+
                     //%s代表字符串(发送信息)
                     $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
@@ -156,5 +162,25 @@ class WxController extends Controller
         //openid
         $openid=$this->access_token();
         echo $openid;
+    }
+    //测试
+    public function openid(){
+        $openid='onun_5lLzel17JvjX1tQiJH40eno';
+        $openid=WxUserModel::where('openid',$openid)->first();
+        print_r($openid);
+    }
+    //测试（postman）get
+    public function test2(){
+        print_r($_GET);
+    }
+    //post(form-data)
+    public function test3(){
+        print_r($_POST);
+    }
+    //post(raw)
+    public function test4(){
+        $xml_str=file_get_contents('php://input');
+        $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+        echo $data->ToUserName;
     }
 }

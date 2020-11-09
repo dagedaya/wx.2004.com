@@ -26,3 +26,9 @@ Route::get('/access_token','WxController@access_token');
 Route::get('/weather','WxController@weather');
 //测试2
 Route::get('/test','WxController@test');
+//测试3(postman)
+Route::get('test2','WxController@test2');//get
+Route::post('test3','WxController@test3');//post(form-data)
+Route::post('test4','WxController@test4');//post(raw)
+Route::get('/openid','WxController@openid');
+
