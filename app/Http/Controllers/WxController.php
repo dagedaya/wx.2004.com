@@ -232,12 +232,12 @@ class WxController extends Controller
             'button'=>[
                 [
                     'type'=>'click',
-                    'name'=>"weather",
+                    'name'=>"天气",
                     'key'=>'WEATHER'
                 ],
                 [
                     'type'=>'view',
-                    'name'=>'baidu',
+                    'name'=>'百度',
                     'url'=>'https://www.baidu.com'
                 ],
             ]
@@ -245,7 +245,7 @@ class WxController extends Controller
         $client=new Client();
         $response=$client->request('POST',$url,[
             'verify'=>false,
-            'body'=>json_encode($array),
+            'body'=>json_encode($array,JSON_UNESCAPED_UNICODE),
         ]);
         $data=$response->getBody();
         echo $data;
