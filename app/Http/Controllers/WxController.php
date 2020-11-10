@@ -236,9 +236,12 @@ class WxController extends Controller
                     'key'=>'WEATHER'
                 ],
                 [
-                    'type'=>'view',
-                    'name'=>'百度',
-                    'url'=>'https://www.baidu.com'
+                    'name'=>"菜单",
+                    "sub_button"=>[
+                        'type'=>'view',
+                        'name'=>'百度',
+                        'url'=>'https://www.baidu.com'
+                    ]
                 ],
             ]
         ];
