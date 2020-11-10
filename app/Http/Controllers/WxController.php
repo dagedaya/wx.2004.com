@@ -59,6 +59,7 @@ class WxController extends Controller
                             exit;
                         }elseif ($data->MsgType=='video'){  //video视频
                             echo $this->videohandler($data);
+                            $this->video();
                             exit;
                         }
 //                        }elseif ($data->Event=='voice'){  //voice音频
@@ -195,8 +196,6 @@ class WxController extends Controller
             'msg_id'=>$data->MsgId,
         ];
         MediaModel::insert($data);
-        $result=$this->video($toUser,$fromUser,$content,$title,$description);
-        return $result;
     }
 //    //音频
 //    protected function voicehandler($data){
