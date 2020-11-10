@@ -41,10 +41,41 @@ class WxController extends Controller
 //            die;
             //2.把xml文本转换成php的数组或者对象
             $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $this->data=$data;
             //判断该数据包是否是订阅的事件推送
             if(!empty($data)){
                 $toUser = $data->FromUserName;//openid
                 $fromUser = $data->ToUserName;
+
+                //将聊天记录入库
+                $msg_type=$data->MsgType;//推送事件的消息类型
+                switch ($msg_type){
+                    case 'event':
+                        if($data->Event=='subscribe'){  //subscribe关注
+                            echo $this->subscribehandler();
+                            exit;
+                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
+                            echo $this->unsubscribehandler();
+                            exit;
+                        }elseif ($data->Event=='video'){  //video视频
+                            echo $this->videohandler();
+                            exit;
+                        }elseif ($data->Event=='voice'){  //voice音频
+                            echo $this->voicehandler();
+                            exit;
+                        }elseif ($data->Event=='text'){  //text文本
+                            echo $this->texthandler();
+                            exit;
+                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
+                            echo $this->clickhandler();
+                            exit;
+                        }elseif ($data->Event=='VIEW'){  //菜单click点击事件
+                            echo $this->viewhandler();
+                            exit;
+                        }
+                }
+
+
                 if (strtolower($data->MsgType) == "event") {
                     //关注
                     if (strtolower($data->Event == 'subscribe')) {
@@ -164,6 +195,19 @@ class WxController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         return $info;
     }
+
+    //关注
+    protected function subscribehandler(){
+        //入库
+        echo '<pre>';print_r($this->data);echo '</pre>';
+        $data=[
+            'media_type'=>$this->data->FromUserName,
+            'add_time'=>$this->data->CreateTime,
+        ];
+        MediaModel::insert($data);
+    }
+
+
     //获取access_token并缓存
     public function access_token(){
         $key="access_token:";
@@ -272,8 +316,7 @@ class WxController extends Controller
         $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
         $api=file_get_contents($url);
         $api=json_decode($api,true);
-        $content = "天气状态：".$api['now']['text'].'
-                                风向：'.$api['now']['windDir'];
+        $content = "天气状态：".$api['now']['text'].'风向：'.$api['now']['windDir'];
 //        echo $content;
         //openid
         $openid=$this->access_token();
