@@ -36,7 +36,7 @@ class WxController extends Controller
             //1.接收数据
             $xml_str = file_get_contents('php://input');
             //记录日志
-//            file_put_contents('wx_event.log',$xml_str,'FILE_APPEND');
+            file_put_contents('wx_event.log',$xml_str,'FILE_APPEND');
 //            echo "$echostr";
 //            die;
             //2.把xml文本转换成php的数组或者对象
@@ -49,7 +49,6 @@ class WxController extends Controller
                     //关注
                     if (strtolower($data->Event == 'subscribe')) {
                         //回复用户消息(纯文本格式)
-
                         $msgType = 'text';
                         $content = '欢迎关注了我';
                         //根据OPENID获取用户信息（并且入库）
@@ -180,7 +179,7 @@ class WxController extends Controller
 //            $response=file_get_contents($url);
             //使用guzzl发送get请求
             $client=new Client();//实例化客户端
-            $response=$client->request('GET',$url,['verify'=>false]);//发起请求并接收响应
+            $response=$client->request('GET',$url,['verify'=>false]);//发起请求并接收响应    ssl
             $json_str=$response->getBody();//服务器的响应数据
             $data=json_decode($json_str,true);
             $token=$data['access_token'];
