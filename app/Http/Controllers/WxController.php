@@ -54,11 +54,11 @@ class WxController extends Controller
                         if($data->Event=='subscribe') {  //subscribe关注
                            echo $this->subscribehandler($data);
                             exit;
+                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
+                            $this->unsubscribehandler($data);
+                        }elseif ($data->Event=='video'){  //video视频
+                            $this->videohandler($data);
                         }
-//                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
-//                            $this->unsubscribehandler($data);
-//                        }elseif ($data->Event=='video'){  //video视频
-//                            $this->videohandler($data);
 //                        }elseif ($data->Event=='voice'){  //voice音频
 //                            $this->voicehandler($data);
 //                        }elseif ($data->Event=='text'){  //text文本
@@ -188,21 +188,21 @@ class WxController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
         return $info;
     }
-//    //取关
-//    protected function unsubscribehandler($data){
-//
-//    }
-//    //视频
-//    protected function videohandler($data){
-//        //入库
-//        $data=[
-//            'add_time'=>$data->CreateTime,
-//            'media_type'=>$data->MsgType,
-//            'media_id'=>$data->MediaId,
-//            'msg_id'=>$data->MsgId,
-//        ];
-//        MediaModel::insert($data);
-//    }
+    //取关
+    protected function unsubscribehandler($data){
+
+    }
+    //视频
+    protected function videohandler($data){
+        //入库
+        $data=[
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'media_id'=>$data->MediaId,
+            'msg_id'=>$data->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
 //    //音频
 //    protected function voicehandler($data){
 //        $data=[
