@@ -51,28 +51,29 @@ class WxController extends Controller
                 $msg_type=$data->MsgType;//推送事件的消息类型
                 switch ($msg_type){
                     case 'event':
-                        if($data->Event=='subscribe'){  //subscribe关注
+                        if($data->Event=='subscribe') {  //subscribe关注
                             echo $this->subscribehandler();
                             exit;
-                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
-                            echo $this->unsubscribehandler();
-                            exit;
-                        }elseif ($data->Event=='video'){  //video视频
-                            echo $this->videohandler();
-                            exit;
-                        }elseif ($data->Event=='voice'){  //voice音频
-                            echo $this->voicehandler();
-                            exit;
-                        }elseif ($data->Event=='text'){  //text文本
-                            echo $this->texthandler();
-                            exit;
-                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
-                            echo $this->clickhandler();
-                            exit;
-                        }elseif ($data->Event=='VIEW'){  //菜单click点击事件
-                            echo $this->viewhandler();
-                            exit;
                         }
+//                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
+//                            echo $this->unsubscribehandler();
+//                            exit;
+//                        }elseif ($data->Event=='video'){  //video视频
+//                            echo $this->videohandler();
+//                            exit;
+//                        }elseif ($data->Event=='voice'){  //voice音频
+//                            echo $this->voicehandler();
+//                            exit;
+//                        }elseif ($data->Event=='text'){  //text文本
+//                            echo $this->texthandler();
+//                            exit;
+//                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
+//                            echo $this->clickhandler();
+//                            exit;
+//                        }elseif ($data->Event=='VIEW'){  //菜单click点击事件
+//                            echo $this->viewhandler();
+//                            exit;
+//                        }
                 }
 
 
@@ -201,7 +202,7 @@ class WxController extends Controller
         //入库
         echo '<pre>';print_r($this->data);echo '</pre>';
         $data=[
-            'media_type'=>$this->data->FromUserName,
+            'media_type'=>$this->data->MsgType,
             'add_time'=>$this->data->CreateTime,
         ];
         MediaModel::insert($data);
