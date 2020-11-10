@@ -52,7 +52,7 @@ class WxController extends Controller
                 switch ($msg_type){
                     case 'event':
                         if($data->Event=='subscribe') {  //subscribe关注
-                            echo $this->subscribehandler();
+                            echo $this->subscribehandler($data);
                             exit;
                         }
 //                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
@@ -77,51 +77,7 @@ class WxController extends Controller
                 }
 
 
-                if (strtolower($data->MsgType) == "event") {
-                    //关注
-                    if (strtolower($data->Event == 'subscribe')) {
-                        //回复用户消息(纯文本格式)
-                        $msgType = 'text';
-                        $content = '欢迎关注了我';
-                        //根据OPENID获取用户信息（并且入库）
-                        //1.获取openid
-                        $token=$this->access_token();
-                        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-                        file_put_contents('user_access.log',$url);
-                        $user=file_get_contents($url);
-                        $user=json_decode($user,true);
-                        $wxuser=WxUserModel::where('openid',$user['openid'])->first();
-                        if(!empty($wxuser)){
-                            $content="欢迎回来";
-                        }else{
-                            $data=[
-                                'subscribe'=>$user['subscribe'],
-                                'openid'=>$user['openid'],
-                                'nickname'=>$user['nickname'],
-                                'sex'=>$user['sex'],
-                                'city'=>$user['city'],
-                                'country'=>$user['country'],
-                                'province'=>$user['province'],
-                                'language'=>$user['language'],
-                            ];
-                            $data=WxUserModel::insert($data);
-                        }
-                        //%s代表字符串(发送信息)
-                        $template = "<xml>
-                            <ToUserName><![CDATA[%s]]></ToUserName>
-                            <FromUserName><![CDATA[%s]]></FromUserName>
-                            <CreateTime>%s</CreateTime>
-                            <MsgType><![CDATA[%s]]></MsgType>
-                            <Content><![CDATA[%s]]></Content>
-                            </xml>";
-                        $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
-                        return $info;
-                    }
-                    //取关
-                    if (strtolower($data->Event == 'unsubscribe')) {
-                        //清除用户的信息
-                    }
-                }
+
                 if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
 //                    echo "";
@@ -198,14 +154,44 @@ class WxController extends Controller
     }
 
     //关注
-    protected function subscribehandler(){
-        //入库
-        echo '<pre>';print_r($this->data);echo '</pre>';
-        $data=[
-            'media_type'=>$this->data->MsgType,
-            'add_time'=>$this->data->CreateTime,
-        ];
-        MediaModel::insert($data);
+    protected function subscribehandler($data){
+        $toUser = $data->FromUserName;//openid
+        $fromUser = $data->ToUserName;
+        $msgType = 'text';
+        $content = '欢迎关注了我';
+        //根据OPENID获取用户信息（并且入库）
+        //1.获取openid
+        $token=$this->access_token();
+        $url="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
+        file_put_contents('user_access.log',$url);
+        $user=file_get_contents($url);
+        $user=json_decode($user,true);
+        $wxuser=WxUserModel::where('openid',$user['openid'])->first();
+        if(!empty($wxuser)){
+            $content="欢迎回来";
+        }else{
+            $data=[
+                'subscribe'=>$user['subscribe'],
+                'openid'=>$user['openid'],
+                'nickname'=>$user['nickname'],
+                'sex'=>$user['sex'],
+                'city'=>$user['city'],
+                'country'=>$user['country'],
+                'province'=>$user['province'],
+                'language'=>$user['language'],
+            ];
+            $data=WxUserModel::insert($data);
+        }
+        //%s代表字符串(发送信息)
+        $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
+        return $info;
     }
 
 
@@ -300,15 +286,6 @@ class WxController extends Controller
         $data=$response->getBody();
         echo $data;
     }
-
-
-
-
-
-
-
-
-
 
     //测试
     public function weather(){
