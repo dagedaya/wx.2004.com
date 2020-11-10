@@ -193,17 +193,17 @@ class WxController extends Controller
     }
     //天气
     public function weather1(){
-        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=beijing&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
+        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
         $weather=file_get_contents($url);
         $weather=json_decode($weather,true);
         if($weather['success']){
-            $c="";
+            $content="";
             foreach ($weather['result'] as $v){
-                $c.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
+                $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
             }
         }
-        Log::info('===='.$c);
-        echo $c;
+        Log::info('===='.$content);
+        echo $content;
     }
     //上传素材
     public function guzzle2(){

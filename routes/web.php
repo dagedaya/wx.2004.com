@@ -27,6 +27,8 @@ Route::match(['get','post'],'/wx','WxController@checkSignature');
 Route::get('/guzzle2','WxController@guzzle2');
 //获取access_token
 Route::get('/access_token','WxController@access_token');
+//天气(780)
+Route::get('/weather1','WxController@weather1');
 
 
 //测试1
