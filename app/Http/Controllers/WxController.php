@@ -55,9 +55,11 @@ class WxController extends Controller
                            echo $this->subscribehandler($data);
                             exit;
                         }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
-                            $this->unsubscribehandler($data);
+                            echo $this->unsubscribehandler($data);
+                            exit;
                         }elseif ($data->MsgType=='video'){  //video视频
-                            $this->videohandler($data);
+                            echo $this->videohandler($data);
+                            exit;
                         }
 //                        }elseif ($data->Event=='voice'){  //voice音频
 //                            $this->voicehandler($data);
