@@ -203,7 +203,7 @@ class WxController extends Controller
             }
         }
 //        Log::info('===='.$content);
-        return $c;
+        echo $c;
     }
     //上传素材
     public function guzzle2(){
