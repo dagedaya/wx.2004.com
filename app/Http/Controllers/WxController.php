@@ -58,8 +58,11 @@ class WxController extends Controller
                             echo $this->unsubscribehandler($data);
                             exit;
                         }elseif ($data->MsgType=='video'){  //video视频
-                            echo $this->videohandler($data);
-                            $this->video();
+                            $this->videohandler($data);
+                            $content="已存入";
+                            $title="视频";
+                            $description="暂无描述";
+                            echo $this->video($toUser,$fromUser,$content,$title,$description);
                             exit;
                         }
 //                        }elseif ($data->Event=='voice'){  //voice音频
@@ -114,7 +117,7 @@ class WxController extends Controller
                         return $info;
                     }
                 }
-                //微信素材库
+                //微信素材库(图片)
                 if(strtolower($data->MsgType)=='image'){
                     $media=MediaModel::where('media_url',$data->PicUrl)->first();
                     if(empty($media)){
@@ -132,6 +135,12 @@ class WxController extends Controller
                     $result=$this->text($toUser,$fromUser,$content);
                     return $result;
                 }
+//                if(strtolower($data->MsgType)=="video"){
+//                    $media=MediaModel::where('media_id',$data->MediaId)->first();
+//                    if(empty()){
+//
+//                    }
+//                }
             }
         } else {
             return false;
@@ -183,11 +192,6 @@ class WxController extends Controller
     }
     //视频
     protected function videohandler($data){
-        $toUser = $data->FromUserName;//openid
-        $fromUser = $data->ToUserName;
-        $title = '视频测试';
-        $description = '暂无视频描述';
-        $content="Om0to92Eo1BgOP7zUbRcLp2o-f9VvuE1lvkLtkhb-9wGyFDja-vKfXO1Q3wOy_tv";
         //入库
         $data=[
             'add_time'=>$data->CreateTime,
