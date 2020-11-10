@@ -223,7 +223,7 @@ class WxController extends Controller
 //        $media_id=json_decode($data,true);
         echo $data;
     }
-    //自定义菜单
+    //自定义菜单(post)
     public function create_menu(){
         //获取access_token
         $access_token=$this->access_token();
