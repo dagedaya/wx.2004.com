@@ -53,19 +53,20 @@ class WxController extends Controller
                     case 'event':
                         if($data->Event=='subscribe') {  //subscribe关注
                             $this->subscribehandler($data);
-                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
-                            $this->unsubscribehandler($data);
-                        }elseif ($data->Event=='video'){  //video视频
-                            $this->videohandler($data);
-                        }elseif ($data->Event=='voice'){  //voice音频
-                            $this->voicehandler($data);
-                        }elseif ($data->Event=='text'){  //text文本
-                            $this->texthandler($data);
-                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
-                            $this->clickhandler($data);
-                        }elseif ($data->Event=='VIEW'){  //菜单view点击事件
-                            $this->viewhandler($data);
                         }
+//                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
+//                            $this->unsubscribehandler($data);
+//                        }elseif ($data->Event=='video'){  //video视频
+//                            $this->videohandler($data);
+//                        }elseif ($data->Event=='voice'){  //voice音频
+//                            $this->voicehandler($data);
+//                        }elseif ($data->Event=='text'){  //text文本
+//                            $this->texthandler($data);
+//                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
+//                            $this->clickhandler($data);
+//                        }elseif ($data->Event=='VIEW'){  //菜单view点击事件
+//                            $this->viewhandler($data);
+//                        }
                         break;
                 }
 
@@ -186,49 +187,49 @@ class WxController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), $msgType, $content);
         return $info;
     }
-    //取关
-    protected function unsubscribehandler($data){
-
-    }
-    //视频
-    protected function videohandler($data){
-        //入库
-        $data=[
-            'add_time'=>$data->CreateTime,
-            'media_type'=>$data->MsgType,
-            'media_id'=>$data->MediaId,
-            'msg_id'=>$data->MsgId,
-        ];
-        MediaModel::insert($data);
-    }
-    //音频
-    protected function voicehandler($data){
-        $data=[
-            'add_time'=>$data->CreateTime,
-            'media_type'=>$data->MsgType,
-            'media_id'=>$data->MediaId,
-            'msg_id'=>$data->MsgId,
-        ];
-        MediaModel::insert($data);
-    }
-    //文本
-    protected function texthandler($data){
-        $data=[
-            'add_time'=>$data->CreateTime,
-            'media_type'=>$data->MsgType,
-            'openid'=>$data->FromUserName,
-            'msg_id'=>$data->MsgId,
-        ];
-        MediaModel::insert($data);
-    }
-    //菜单click点击事件
-    protected function clickhandler(){
-
-    }
-    //菜单view事件
-    protected function viewhandler(){
-
-    }
+//    //取关
+//    protected function unsubscribehandler($data){
+//
+//    }
+//    //视频
+//    protected function videohandler($data){
+//        //入库
+//        $data=[
+//            'add_time'=>$data->CreateTime,
+//            'media_type'=>$data->MsgType,
+//            'media_id'=>$data->MediaId,
+//            'msg_id'=>$data->MsgId,
+//        ];
+//        MediaModel::insert($data);
+//    }
+//    //音频
+//    protected function voicehandler($data){
+//        $data=[
+//            'add_time'=>$data->CreateTime,
+//            'media_type'=>$data->MsgType,
+//            'media_id'=>$data->MediaId,
+//            'msg_id'=>$data->MsgId,
+//        ];
+//        MediaModel::insert($data);
+//    }
+//    //文本
+//    protected function texthandler($data){
+//        $data=[
+//            'add_time'=>$data->CreateTime,
+//            'media_type'=>$data->MsgType,
+//            'openid'=>$data->FromUserName,
+//            'msg_id'=>$data->MsgId,
+//        ];
+//        MediaModel::insert($data);
+//    }
+//    //菜单click点击事件
+//    protected function clickhandler(){
+//
+//    }
+//    //菜单view事件
+//    protected function viewhandler(){
+//
+//    }
 
 
     //获取access_token并缓存
