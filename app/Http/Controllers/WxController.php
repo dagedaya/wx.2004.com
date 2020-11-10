@@ -202,7 +202,7 @@ class WxController extends Controller
                 $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
             }
         }
-        Log::info('===='.$content);
+//        Log::info('===='.$content);
         echo $content;
     }
     //上传素材
