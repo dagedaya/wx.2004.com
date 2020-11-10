@@ -56,20 +56,20 @@ class WxController extends Controller
                         }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
                             $this->unsubscribehandler($data);
                         }elseif ($data->Event=='video'){  //video视频
-                            $this->videohandler();
+                            $this->videohandler($data);
                         }elseif ($data->Event=='voice'){  //voice音频
-                            $this->voicehandler();
+                            $this->voicehandler($data);
                         }elseif ($data->Event=='text'){  //text文本
-                            $this->texthandler();
+                            $this->texthandler($data);
                         }elseif ($data->Event=='CLICK'){  //菜单click点击事件
-                            $this->clickhandler();
+                            $this->clickhandler($data);
                         }elseif ($data->Event=='VIEW'){  //菜单view点击事件
-                            $this->viewhandler();
+                            $this->viewhandler($data);
                         }
                 }
 
 
-
+                //天气
                 if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
 //                    echo "";
@@ -193,30 +193,30 @@ class WxController extends Controller
     protected function videohandler($data){
         //入库
         $data=[
-            'add_time'=>CreateTime,
-            'media_type'=>MsgType,
-            'media_id'=>MediaId,
-            'msg_id'=>MsgId,
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'media_id'=>$data->MediaId,
+            'msg_id'=>$data->MsgId,
         ];
         MediaModel::insert($data);
     }
     //音频
     protected function voicehandler($data){
         $data=[
-            'add_time'=>CreateTime,
-            'media_type'=>MsgType,
-            'media_id'=>MediaId,
-            'msg_id'=>MsgId,
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'media_id'=>$data->MediaId,
+            'msg_id'=>$data->MsgId,
         ];
         MediaModel::insert($data);
     }
     //文本
     protected function texthandler($data){
         $data=[
-            'add_time'=>CreateTime,
-            'media_type'=>MsgType,
-            'openid'=>FromUserName,
-            'msg_id'=>MsgId,
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'openid'=>$data->FromUserName,
+            'msg_id'=>$data->MsgId,
         ];
     }
     //菜单click点击事件
