@@ -321,31 +321,31 @@ class WxController extends Controller
         echo $data;
     }
 
-    //测试
-    public function weather(){
-        //天气
-        $key='4e268e1bc28d4d2a9223e11a55b9dab5';
-        $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
-        $api=file_get_contents($url);
-        $api=json_decode($api,true);
-        $content = "天气状态：".$api['now']['text'].'风向：'.$api['now']['windDir'];
-//        echo $content;
-        //openid
-        $openid=$this->access_token();
-        echo $openid;
-    }
-    //测试（postman）get
-    public function test2(){
-        print_r($_GET);
-    }
-    //测试post(form-data)
-    public function test3(){
-        print_r($_POST);
-    }
-    //测试post(raw)
-    public function test4(){
-        $xml_str=file_get_contents('php://input');
-        $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
-        echo $data->ToUserName;
-    }
+//    //测试
+//    public function weather(){
+//        //天气
+//        $key='4e268e1bc28d4d2a9223e11a55b9dab5';
+//        $url="https://devapi.qweather.com/v7/weather/now?location=101010100&key=".$key."&gzip=n";
+//        $api=file_get_contents($url);
+//        $api=json_decode($api,true);
+//        $content = "天气状态：".$api['now']['text'].'风向：'.$api['now']['windDir'];
+////        echo $content;
+//        //openid
+//        $openid=$this->access_token();
+//        echo $openid;
+//    }
+//    //测试（postman）get
+//    public function test2(){
+//        print_r($_GET);
+//    }
+//    //测试post(form-data)
+//    public function test3(){
+//        print_r($_POST);
+//    }
+//    //测试post(raw)
+//    public function test4(){
+//        $xml_str=file_get_contents('php://input');
+//        $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
+//        echo $data->ToUserName;
+//    }
 }
