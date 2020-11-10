@@ -238,9 +238,11 @@ class WxController extends Controller
                 [
                     'name'=>"菜单",
                     "sub_button"=>[
-                        'type'=>'view',
-                        'name'=>'百度',
-                        'url'=>'https://www.baidu.com'
+                        [
+                            'type'=>'view',
+                            'name'=>'百度',
+                            'url'=>'https://www.baidu.com'
+                        ],
                     ]
                 ],
             ]
