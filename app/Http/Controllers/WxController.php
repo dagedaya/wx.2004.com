@@ -223,6 +223,38 @@ class WxController extends Controller
 //        $media_id=json_decode($data,true);
         echo $data;
     }
+    //自定义菜单
+    public function create_menu(){
+        $array = [
+            'button' => [
+                [
+                    'type' => 'click',
+                    'name' => '获取河北天气',
+                    'key' => 'HEBEI_WEATHER'
+                ],
+                [
+                    'name' => '一级菜单',
+                    'sub_button' => [
+                        [
+                            'type' => 'view',
+                            'name' => '百度',
+                            'url' => 'https://www.baidu.com/'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $array=json_encode($array);
+        //获取access_token
+        $access_token=$this->access_token();
+        $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token."";
+        $client=new Client();
+        $response=$client->request('POST',$url,[
+            'verify'=>false,
+            'body'=>$array,
+        ]);
+        print_r($response);
+    }
 
 
 

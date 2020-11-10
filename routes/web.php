@@ -29,6 +29,8 @@ Route::get('/guzzle2','WxController@guzzle2');
 Route::get('/access_token','WxController@access_token');
 //天气(780)
 Route::get('/weather1','WxController@weather1');
+//自定义菜单
+Route::get('/create_menu','WxController@create_menu');
 
 
 //测试1
