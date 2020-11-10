@@ -66,6 +66,7 @@ class WxController extends Controller
                         }elseif ($data->Event=='VIEW'){  //菜单view点击事件
                             $this->viewhandler($data);
                         }
+                        break;
                 }
 
 
@@ -218,6 +219,7 @@ class WxController extends Controller
             'openid'=>$data->FromUserName,
             'msg_id'=>$data->MsgId,
         ];
+        MediaModel::insert($data);
     }
     //菜单click点击事件
     protected function clickhandler(){
@@ -320,6 +322,9 @@ class WxController extends Controller
         $data=$response->getBody();
         echo $data;
     }
+
+
+
 
 //    //测试
 //    public function weather(){
