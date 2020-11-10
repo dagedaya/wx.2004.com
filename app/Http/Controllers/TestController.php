@@ -32,7 +32,8 @@ class TestController extends Controller
             ]
         ]);  //发送请求并接收响应
         $data=$response->getBody();//服务器的响应数据
-        echo $data;
+//        echo $data;
+        $content=$this->weather();
     }
     //测试天气780
     public function weather(){
@@ -46,7 +47,7 @@ class TestController extends Controller
             }
         }
         Log::info('===='.$content);
-        return $content;
+        echo $content;
     }
 
 }
