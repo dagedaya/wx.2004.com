@@ -197,13 +197,13 @@ class WxController extends Controller
         $weather=file_get_contents($url);
         $weather=json_decode($weather,true);
         if($weather['success']){
-            $content="";
+            $c="";
             foreach ($weather['result'] as $v){
-                $content.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
+                $c.='日期：'.$v['days'].$v['week'].'当日温度：'.$v['temperature'].'天气：'.$v['weather'].'风向：'.$v['wind'];
             }
         }
 //        Log::info('===='.$content);
-        return $content;
+        return $c;
     }
     //上传素材
     public function guzzle2(){
