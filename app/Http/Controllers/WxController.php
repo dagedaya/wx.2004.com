@@ -149,6 +149,31 @@ class WxController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         return $info;
     }
+    /**
+     * 4 回复视频消息
+     * @param $toUser
+     * @param $fromUser
+     * @param $content
+     * @param $title
+     * @param $description
+     * @return string
+     */
+    private function video($toUser,$fromUser,$content,$title,$description)
+    {
+        $template = "<xml>
+                              <ToUserName><![CDATA[%s]]></ToUserName>
+                              <FromUserName><![CDATA[%s]]></FromUserName>
+                              <CreateTime><![CDATA[%s]]></CreateTime>
+                              <MsgType><![CDATA[%s]]></MsgType>
+                              <Video>
+                                <MediaId><![CDATA[%s]]></MediaId>
+                                <Title><![CDATA[%s]]></Title>
+                                <Description><![CDATA[%s]]></Description>
+                              </Video>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), 'video', $content,$title,$description);
+        return $info;
+    }
 
     //关注
     protected function subscribehandler($data){
@@ -204,6 +229,7 @@ class WxController extends Controller
             'msg_id'=>$data->MsgId,
         ];
         MediaModel::insert($data);
+        $this->video();
     }
 //    //音频
 //    protected function voicehandler($data){
