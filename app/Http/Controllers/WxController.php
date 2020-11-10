@@ -136,45 +136,6 @@ class WxController extends Controller
             return false;
         }
     }
-    // 1 回复文本消息
-    private function text($toUser,$fromUser,$content)
-    {
-        $template = "<xml>
-                            <ToUserName><![CDATA[%s]]></ToUserName>
-                            <FromUserName><![CDATA[%s]]></FromUserName>
-                            <CreateTime>%s</CreateTime>
-                            <MsgType><![CDATA[%s]]></MsgType>
-                            <Content><![CDATA[%s]]></Content>
-                            </xml>";
-        $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
-        return $info;
-    }
-    /**
-     * 4 回复视频消息
-     * @param $toUser
-     * @param $fromUser
-     * @param $content
-     * @param $title
-     * @param $description
-     * @return string
-     */
-    private function video($toUser,$fromUser,$content,$title,$description)
-    {
-        $template = "<xml>
-                              <ToUserName><![CDATA[%s]]></ToUserName>
-                              <FromUserName><![CDATA[%s]]></FromUserName>
-                              <CreateTime><![CDATA[%s]]></CreateTime>
-                              <MsgType><![CDATA[%s]]></MsgType>
-                              <Video>
-                                <MediaId><![CDATA[%s]]></MediaId>
-                                <Title><![CDATA[%s]]></Title>
-                                <Description><![CDATA[%s]]></Description>
-                              </Video>
-                            </xml>";
-        $info = sprintf($template, $toUser, $fromUser, time(), 'video', $content,$title,$description);
-        return $info;
-    }
-
     //关注
     protected function subscribehandler($data){
         $toUser = $data->FromUserName;//openid
@@ -221,6 +182,11 @@ class WxController extends Controller
     }
     //视频
     protected function videohandler($data){
+        $toUser = $data->FromUserName;//openid
+        $fromUser = $data->ToUserName;
+        $title = '视频测试';
+        $description = '暂无视频描述';
+        $content="Om0to92Eo1BgOP7zUbRcLp2o-f9VvuE1lvkLtkhb-9wGyFDja-vKfXO1Q3wOy_tv";
         //入库
         $data=[
             'add_time'=>$data->CreateTime,
@@ -229,7 +195,8 @@ class WxController extends Controller
             'msg_id'=>$data->MsgId,
         ];
         MediaModel::insert($data);
-        $this->video();
+        $result=$this->video($toUser,$fromUser,$content,$title,$description);
+        return $result;
     }
 //    //音频
 //    protected function voicehandler($data){
@@ -259,7 +226,50 @@ class WxController extends Controller
 //    protected function viewhandler(){
 //
 //    }
-
+    /**
+     * 1 回复文本消息
+     * @param $toUser
+     * @param $fromUser
+     * @param $content
+     * @return string
+     */
+    private function text($toUser,$fromUser,$content)
+    {
+        $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
+        return $info;
+    }
+    /**
+     * 4 回复视频消息
+     * @param $toUser
+     * @param $fromUser
+     * @param $content
+     * @param $title
+     * @param $description
+     * @return string
+     */
+    private function video($toUser,$fromUser,$content,$title,$description)
+    {
+        $template = "<xml>
+                              <ToUserName><![CDATA[%s]]></ToUserName>
+                              <FromUserName><![CDATA[%s]]></FromUserName>
+                              <CreateTime><![CDATA[%s]]></CreateTime>
+                              <MsgType><![CDATA[%s]]></MsgType>
+                              <Video>
+                                <MediaId><![CDATA[%s]]></MediaId>
+                                <Title><![CDATA[%s]]></Title>
+                                <Description><![CDATA[%s]]></Description>
+                              </Video>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), 'video', $content,$title,$description);
+        return $info;
+    }
 
     //获取access_token并缓存
     public function access_token(){
