@@ -52,7 +52,8 @@ class WxController extends Controller
                 switch ($msg_type){
                     case 'event':
                         if($data->Event=='subscribe') {  //subscribe关注
-                            $this->subscribehandler($data);
+                           echo $this->subscribehandler($data);
+                            exit;
                         }
 //                        }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
 //                            $this->unsubscribehandler($data);
