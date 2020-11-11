@@ -8,6 +8,7 @@ use App\Model\WxUserModel;
 use GuzzleHttp\Client;
 use App\Model\MediaModel;
 use Log;
+use Illuminate\Support\Str;
 class WxController extends Controller
 {
     //测试
@@ -138,7 +139,7 @@ class WxController extends Controller
                     $media_id=$data->MediaId;
                     $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
                     $image=file_get_contents($url);
-                    $local_path='static/images/大海.jpg';
+                    $local_path="static/images/".Str::random(111,222).".jpg";
                     $local=file_put_contents($local_path,$image);
                     if($local){
                         $media=MediaModel::where('media_url',$data->PicUrl)->first();
