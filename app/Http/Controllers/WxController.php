@@ -62,15 +62,8 @@ class WxController extends Controller
                                     $content=$this->weather1();
                                     $toUser   = $data->FromUserName;
                                     $fromUser = $data->ToUserName;
-                                    $template = "<xml>
-                                            <ToUserName><![CDATA[%s]]></ToUserName>
-                                            <FromUserName><![CDATA[%s]]></FromUserName>
-                                            <CreateTime>%s</CreateTime>
-                                            <MsgType><![CDATA[%s]]></MsgType>
-                                            <Content><![CDATA[%s]]></Content>
-                                            </xml>";
-                                    $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
-                                    return $info;
+                                    $result=$this->text($toUser,$fromUser,$content);
+                                    return $result;
                                     break;
                                 case "CHECKIN";  //二级签到菜单
                                     $key='CHECKIN'.date('Y-m-d',time());
@@ -81,15 +74,8 @@ class WxController extends Controller
                                     }else{
                                         Redis::zAdd($key,time(),(string)$toUser);//添加一个元素
                                     }
-                                    $template = "<xml>
-                                            <ToUserName><![CDATA[%s]]></ToUserName>
-                                            <FromUserName><![CDATA[%s]]></FromUserName>
-                                            <CreateTime>%s</CreateTime>
-                                            <MsgType><![CDATA[%s]]></MsgType>
-                                            <Content><![CDATA[%s]]></Content>
-                                            </xml>";
-                                    $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
-                                    return $info;
+                                    $result=$this->text($toUser,$fromUser,$content);
+                                    return $result;
                                     break;
                             }
                         }elseif ($data->Event=='VIEW'){  //菜单view事件
