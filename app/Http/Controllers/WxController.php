@@ -102,11 +102,14 @@ class WxController extends Controller
                             $content  = "啊，亲，我疯了，你在说什么";
                             break;
                     }
-                    // 用户点击一级菜单 获取天气按钮 click
-                    if($data->Event == 'CLICK'){
-                        if($data->EventKey == 'WEATHER'){
-                            $category=1;
-                            $content=$this->weather1();
+                    //一级菜单点击获取天气
+                    if(strtolower($data->MsgType)=='Event'){
+                        if($data->Event=='CLICK'){
+                            switch ($data->EventKey){
+                                case 'WEATHER';
+                                    $category=1;
+                                    $content=$this->weather1();
+                            }
                         }
                     }
                     $toUser   = $data->FromUserName;
