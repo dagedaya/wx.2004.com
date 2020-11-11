@@ -90,6 +90,9 @@ class WxController extends Controller
                         case 'text';
                             $this->texthandler($data);
                         break;
+                        case 'CLICK';
+                            $this->clickhandler();
+                        break;
                 }
 
                 //天气
@@ -235,12 +238,15 @@ class WxController extends Controller
         ];
         MediaModel::insert($data);
     }
-//    //菜单click点击事件
-//    protected function clickhandler(){
-//        $data=[
-//            ''
-//        ];
-//    }
+    //菜单click点击事件
+    protected function clickhandler(){
+        $data=[
+            'add_time'=>CreateTime,
+            'media_type'=>Event,
+            'openid'=>FromUserName,
+        ];
+        MediaModel::insert($data);
+    }
 //    //菜单view事件
 //    protected function viewhandler(){
 //
