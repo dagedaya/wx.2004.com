@@ -73,6 +73,8 @@ class WxController extends Controller
                                     $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                                     return $info;
                             }
+                        }elseif ($data->Event=='VIEW'){
+                            $this->viewhandler($data);
                         }
                         break;
                         case 'video':
@@ -83,9 +85,6 @@ class WxController extends Controller
                         break;
                         case 'text';
                             $this->texthandler($data);
-                        break;
-                        case 'VIEW';
-                            $this->viewhandler($data);
                         break;
                 }
 
