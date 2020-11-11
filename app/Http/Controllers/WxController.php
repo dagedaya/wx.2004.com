@@ -219,7 +219,7 @@ class WxController extends Controller
     protected function texthandler($data){
         $data=[
             'add_time'=>$data->CreateTime,
-            'media_type'=>$data->Event,
+            'media_type'=>$data->MsgType,
             'openid'=>$data->FromUserName,
             'msg_id'=>$data->MsgId,
         ];
@@ -239,7 +239,7 @@ class WxController extends Controller
         $data=[
             'add_time'=>$data->CreateTime,
             'msg_id'=>$data->MenuId,
-            'media_type'=>$data->MsgType,
+            'media_type'=>$data->Event,
             'openid'=>$data->FromUserName,
         ];
         MediaModel::insert($data);
