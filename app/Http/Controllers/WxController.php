@@ -75,7 +75,7 @@ class WxController extends Controller
                             }
                         }elseif ($data->Event=='VIEW'){  //菜单view事件
                             $this->viewhandler($data);
-                        }elseif($data->Event=='CLICK'){  //签到
+                        }elseif($data->Event=='CLICK'){  //二级菜单签到
                             switch ($data->EventKey){
                                 case 'checkin';
                                 $key='checkin'.date('Y-m-d',time());
