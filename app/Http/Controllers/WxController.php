@@ -73,7 +73,7 @@ class WxController extends Controller
                                     $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                                     return $info;
                             }
-                        }elseif ($data->Event=='VIEW'){
+                        }elseif ($data->Event=='VIEW'){  //菜单view事件
                             $this->viewhandler($data);
                         }
                         break;
