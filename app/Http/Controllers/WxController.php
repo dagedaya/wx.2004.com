@@ -137,7 +137,7 @@ class WxController extends Controller
                     //下载
                     $token=$this->access_token();
                     $media_id=$data->MediaId;
-                    $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
+                    $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=".$media_id;
                     $image=file_get_contents($url);
                     $local_path="static/images/".Str::random(111,222).".jpg";
                     $local=file_put_contents($local_path,$image);
@@ -213,26 +213,27 @@ class WxController extends Controller
     }
     //视频
     protected function videohandler($data){
+//        dd($data);
         $toUser = $data->FromUserName;//openid
         $fromUser = $data->ToUserName;
         //下载
         $token=$this->access_token();
         $media_id=$data->MediaId;
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=".$media_id;
         $image=file_get_contents($url);
         $local_path="static/video/".Str::random(111,222).".mp4";
         $local=file_put_contents($local_path,$image);
         if($local){
-            $data=MediaModel::where('media_id',$data->MedisId)->first();
-            if(empty($data)){
+            $video=MediaModel::where('media_id',$data->MedisId)->first();
+            if(empty($video)){
                 //入库
-                $data=[
+                $video_info=[
                     'add_time'=>$data->CreateTime,
                     'media_type'=>$data->MsgType,
                     'media_id'=>$data->MediaId,
                     'msg_id'=>$data->MsgId,
                 ];
-                MediaModel::insert($data);
+                MediaModel::insert($video_info);
                 $content="视频已存入素材库";
             }else{
                 $content="素材库已经有了";
