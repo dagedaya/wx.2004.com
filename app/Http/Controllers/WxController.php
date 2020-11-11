@@ -74,13 +74,6 @@ class WxController extends Controller
                                     return $info;
                             }
                         }
-//                        }elseif ($data->Event=='text'){  //text文本
-//                            $this->texthandler($data);
-//                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
-//                            $this->clickhandler($data);
-//                        }elseif ($data->Event=='VIEW'){  //菜单view点击事件
-//                            $this->viewhandler($data);
-//                        }
                         break;
                         case 'video':
                             $this->videohandler($data);
@@ -91,7 +84,7 @@ class WxController extends Controller
                         case 'text';
                             $this->texthandler($data);
                         break;
-                        case 'view';
+                        case 'VIEW';
                             $this->viewhandler($data);
                         break;
                 }
@@ -153,12 +146,6 @@ class WxController extends Controller
                     $result=$this->text($toUser,$fromUser,$content);
                     return $result;
                 }
-//                if(strtolower($data->MsgType)=="video"){
-//                    $media=MediaModel::where('media_id',$data->MediaId)->first();
-//                    if(empty()){
-//
-//                    }
-//                }
             }
         } else {
             return false;
