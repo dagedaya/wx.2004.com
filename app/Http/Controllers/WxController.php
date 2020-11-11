@@ -57,7 +57,7 @@ class WxController extends Controller
                             echo $this->unsubscribehandler($data);
                             exit;
                         }elseif($data->Event=='CLICK'){  //菜单天气
-                            $this->clickhandler();
+                            $this->clickhandler($data);
                             switch ($data->EventKey){
                                 case 'WEATHER';
                                     $content=$this->weather1();
@@ -237,11 +237,11 @@ class WxController extends Controller
         MediaModel::insert($data);
     }
     //菜单click点击事件
-    protected function clickhandler(){
+    protected function clickhandler($data){
         $data=[
-            'add_time'=>CreateTime,
-            'media_type'=>Event,
-            'openid'=>FromUserName,
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->Event,
+            'openid'=>$data->FromUserName,
         ];
         MediaModel::insert($data);
     }
