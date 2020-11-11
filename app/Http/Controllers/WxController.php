@@ -77,7 +77,6 @@ class WxController extends Controller
                         break;
                 }
 
-
                 //天气
                 if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
@@ -102,6 +101,13 @@ class WxController extends Controller
                             $category = 1;
                             $content  = "啊，亲，我疯了，你在说什么";
                             break;
+                    }
+                    // 用户点击一级菜单 获取天气按钮 click
+                    if($data->Event == 'CLICK'){
+                        if($data->EventKey == 'WEATHER'){
+                            $category=1;
+                            $this->weather1();
+                        }
                     }
                     $toUser   = $data->FromUserName;
                     $fromUser = $data->ToUserName;
