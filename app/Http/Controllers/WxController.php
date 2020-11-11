@@ -106,7 +106,7 @@ class WxController extends Controller
                     if($data->Event == 'CLICK'){
                         if($data->EventKey == 'WEATHER'){
                             $category=1;
-                            $this->weather1();
+                            $content=$this->weather1();
                         }
                     }
                     $toUser   = $data->FromUserName;
