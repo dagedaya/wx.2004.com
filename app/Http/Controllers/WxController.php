@@ -57,13 +57,6 @@ class WxController extends Controller
                         }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
                             echo $this->unsubscribehandler($data);
                             exit;
-                        }elseif ($data->MsgType=='video'){  //video视频
-                            $this->videohandler($data);
-                            $content="已存入";
-                            $title="视频";
-                            $description="暂无描述";
-                            echo $this->video($toUser,$fromUser,$content,$title,$description);
-                            exit;
                         }
 //                        }elseif ($data->Event=='voice'){  //voice音频
 //                            $this->voicehandler($data);
@@ -75,6 +68,14 @@ class WxController extends Controller
 //                            $this->viewhandler($data);
 //                        }
                         break;
+                    case 'video':
+                        $this->videohandler($data);
+                        $content="已存入";
+                        $title="视频";
+                        $description="暂无描述";
+                        echo $this->video($toUser,$fromUser,$content,$title,$description);
+                        exit;
+                    break;
                 }
 
 
