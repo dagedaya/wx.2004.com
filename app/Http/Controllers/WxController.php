@@ -72,7 +72,7 @@ class WxController extends Controller
                                     $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                                     return $info;
                                     break;
-                                case "CHECKIN";
+                                case "CHECKIN";  //二级签到菜单
                                     $key='CHECKIN'.date('Y-m-d',time());
                                     $content="签到成功";
                                     $touser_info=Redis::zrange($key,0,-1);//获取集合中的部分元素
@@ -147,6 +147,8 @@ class WxController extends Controller
                 }
                 //微信素材库(图片)
                 if(strtolower($data->MsgType)=='image'){
+                    //下载
+//                    $url="";
                     $media=MediaModel::where('media_url',$data->PicUrl)->first();
                     if(empty($media)){
                         $data=[
@@ -154,6 +156,7 @@ class WxController extends Controller
                             'media_type'=>'image',//类型为图片
                             'add_time'=>time(),
                             'openid'=>$data->FromUserName,
+                            'media_id'=>$data->MediaId,
                         ];
                         MediaModel::insert($data);
                         $content="图片已存到素材库";
@@ -434,4 +437,9 @@ class WxController extends Controller
 //        $data = simplexml_load_string($xml_str, 'SimpleXMLElement', LIBXML_NOCDATA);
 //        echo $data->ToUserName;
 //    }
+//测试下载素材
+    public function dlmedia(){
+        $token=$this->access_token();
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=MEDIA_ID";
+    }
 }
