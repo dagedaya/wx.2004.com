@@ -31,7 +31,6 @@ class WxController extends Controller
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode($tmpArr);
         $tmpStr = sha1($tmpStr);
-
         if ($tmpStr == $signature) {
             //1.接收数据
             $xml_str = file_get_contents('php://input');
@@ -57,6 +56,22 @@ class WxController extends Controller
                         }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
                             echo $this->unsubscribehandler($data);
                             exit;
+                        }elseif($data->Event=='CLICK'){
+                            switch ($data->EventKey){
+                                case 'WEATHER';
+                                    $content=$this->weather1();
+                                    $toUser   = $data->FromUserName;
+                                    $fromUser = $data->ToUserName;
+                                    $template = "<xml>
+                                            <ToUserName><![CDATA[%s]]></ToUserName>
+                                            <FromUserName><![CDATA[%s]]></FromUserName>
+                                            <CreateTime>%s</CreateTime>
+                                            <MsgType><![CDATA[%s]]></MsgType>
+                                            <Content><![CDATA[%s]]></Content>
+                                            </xml>";
+                                    $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
+                                    return $info;
+                            }
                         }
 //                        }elseif ($data->Event=='text'){  //text文本
 //                            $this->texthandler($data);
@@ -101,16 +116,6 @@ class WxController extends Controller
                             $category = 1;
                             $content  = "啊，亲，我疯了，你在说什么";
                             break;
-                    }
-                    //一级菜单点击获取天气
-                    if(strtolower($data->MsgType)=='Event'){
-                        if($data->Event=='CLICK'){
-                            switch ($data->EventKey){
-                                case 'WEATHER';
-                                    $category=1;
-                                    $content=$this->weather1();
-                            }
-                        }
                     }
                     $toUser   = $data->FromUserName;
                     $fromUser = $data->ToUserName;
