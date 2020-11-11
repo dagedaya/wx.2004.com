@@ -80,14 +80,21 @@ class WxController extends Controller
                                 case 'checkin';
                                 $key='checkin'.date('Y-m-d',time());
                                 $content="签到成功";
-                                $touser_info=Redis::zrange($key,0,-1);
+                                $touser_info=Redis::zrange($key,0,-1);//获取集合中的部分元素
                                 if(in_array((string)$toUser,$touser_info)){
                                     $content="已经签到,不能重复";
                                 }else{
-                                    Redis::zAdd($key,time(),(string)$toUser);
+                                    Redis::zAdd($key,time(),(string)$toUser);//添加一个元素
                                 }
-                                $result=$this->text($toUser,$fromUser,$content);
-                                return $result;
+                                    $template = "<xml>
+                                            <ToUserName><![CDATA[%s]]></ToUserName>
+                                            <FromUserName><![CDATA[%s]]></FromUserName>
+                                            <CreateTime>%s</CreateTime>
+                                            <MsgType><![CDATA[%s]]></MsgType>
+                                            <Content><![CDATA[%s]]></Content>
+                                            </xml>";
+                                    $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
+                                    return $info;
                             }
                         }
                         break;
