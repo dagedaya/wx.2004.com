@@ -152,7 +152,8 @@ class WxController extends Controller
                     $media_id=$data->MediaId;
                     $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
                     $image=file_get_contents($url);
-                    $local_path='static/images/mmbiz_jpg';
+                    $local=$data->PicURL;
+                    $local_path='static/images/'.$local;
                     $local=file_put_contents($local_path,$image);
                     if($local){
                         $media=MediaModel::where('media_url',$data->PicUrl)->first();
@@ -163,6 +164,7 @@ class WxController extends Controller
                                 'add_time'=>time(),
                                 'openid'=>$data->FromUserName,
                                 'media_id'=>$data->MediaId,
+                                'local_path'=>$local_path,
                             ];
                             MediaModel::insert($data);
                             $content="图片已存到素材库";
