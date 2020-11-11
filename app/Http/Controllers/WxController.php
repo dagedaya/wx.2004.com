@@ -372,9 +372,9 @@ class WxController extends Controller
         $array=[
             'button'=>[
                 [
-                    'type'=>'click',
+                    'type'=>'view',
                     'name'=>"商城",
-                    'url'=>"http://jd.2004.com/",
+                    'url'=>"http://2004dageda.wwwhb.wenao.top/",
                 ],
                 [
                     'type'=>'click',
@@ -398,6 +398,8 @@ class WxController extends Controller
                 ],
             ]
         ];
+//        $a=json_encode($array,JSON_UNESCAPED_UNICODE);
+//        dd($a);
         $client=new Client();
         $response=$client->request('POST',$url,[
             'verify'=>false,
