@@ -72,9 +72,9 @@ class WxController extends Controller
                         case 'voice';
                             $this->voicehandler($data);
                         break;
-//                        case 'text';
-//                            $this->texthandler($data);
-//                        break;
+                        case 'text';
+                            $this->texthandler($data);
+                        break;
                 }
 
 
