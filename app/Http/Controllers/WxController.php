@@ -88,7 +88,8 @@ class WxController extends Controller
                             return $result;
                         break;
                         case 'voice';
-                            $this->voicehandler($data);
+                            $result=$this->voicehandler($data);
+                            return $result;
                         break;
                         case 'text';
                             $this->texthandler($data);
