@@ -311,7 +311,7 @@ class WxController extends Controller
             //存到redis中
             Redis::set($key,$token);
             //设置过期时间
-            Redis::expire($key,3600);
+            Redis::expire($key,7200);
         }
         return $token;
     }
@@ -367,6 +367,11 @@ class WxController extends Controller
                             'type'=>'view',
                             'name'=>'百度',
                             'url'=>'https://www.baidu.com'
+                        ],
+                        [
+                            'type'  => 'click',
+                            'name'  => '签到',
+                            'key'   => 'checkin'
                         ],
                     ]
                 ],
