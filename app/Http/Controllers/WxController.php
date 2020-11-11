@@ -45,7 +45,6 @@ class WxController extends Controller
             if(!empty($data)){
                 $toUser = $data->FromUserName;//openid
                 $fromUser = $data->ToUserName;
-
                 //将聊天记录入库
                 $msg_type=$data->MsgType;//推送事件的消息类型
                 switch ($msg_type){
@@ -56,7 +55,7 @@ class WxController extends Controller
                         }elseif ($data->Event=='unsubscribe'){  //unsubscribe取关
                             echo $this->unsubscribehandler($data);
                             exit;
-                        }elseif($data->Event=='CLICK'){  //菜单天气
+                        }elseif($data->Event=='CLICK'){  //一级菜单天气
                             $this->clickhandler($data);
                             switch ($data->EventKey){
                                 case 'WEATHER';
@@ -72,20 +71,16 @@ class WxController extends Controller
                                             </xml>";
                                     $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                                     return $info;
-                            }
-                        }elseif ($data->Event=='VIEW'){  //菜单view事件
-                            $this->viewhandler($data);
-                        }elseif($data->Event=='CLICK'){  //二级菜单签到
-                            switch ($data->EventKey){
-                                case 'checkin';
-                                $key='checkin'.date('Y-m-d',time());
-                                $content="签到成功";
-                                $touser_info=Redis::zrange($key,0,-1);//获取集合中的部分元素
-                                if(in_array((string)$toUser,$touser_info)){
-                                    $content="已经签到,不能重复";
-                                }else{
-                                    Redis::zAdd($key,time(),(string)$toUser);//添加一个元素
-                                }
+                                    break;
+                                case "CHECKIN";
+                                    $key='CHECKIN'.date('Y-m-d',time());
+                                    $content="签到成功";
+                                    $touser_info=Redis::zrange($key,0,-1);//获取集合中的部分元素
+                                    if(in_array((string)$toUser,$touser_info)){
+                                        $content="已经签到,不能重复";
+                                    }else{
+                                        Redis::zAdd($key,time(),(string)$toUser);//添加一个元素
+                                    }
                                     $template = "<xml>
                                             <ToUserName><![CDATA[%s]]></ToUserName>
                                             <FromUserName><![CDATA[%s]]></FromUserName>
@@ -95,7 +90,10 @@ class WxController extends Controller
                                             </xml>";
                                     $info = sprintf($template, $toUser, $fromUser, time(),'text',$content);
                                     return $info;
+                                    break;
                             }
+                        }elseif ($data->Event=='VIEW'){  //菜单view事件
+                            $this->viewhandler($data);
                         }
                         break;
                         case 'video':
@@ -108,7 +106,6 @@ class WxController extends Controller
                             $this->texthandler($data);
                         break;
                 }
-
                 //天气
                 if(strtolower($data->MsgType) == "text"){
 //                   file_put_contents('wx_text.log',$data,'FILE_APPEND');
@@ -392,7 +389,7 @@ class WxController extends Controller
                         [
                             'type'  => 'click',
                             'name'  => '签到',
-                            'key'   => 'checkin'
+                            'key'   => 'CHECKIN'
                         ],
                     ]
                 ],
