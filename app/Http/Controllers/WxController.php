@@ -75,6 +75,20 @@ class WxController extends Controller
                             }
                         }elseif ($data->Event=='VIEW'){  //菜单view事件
                             $this->viewhandler($data);
+                        }elseif($data->Event=='CLICK'){  //签到
+                            switch ($data->EventKey){
+                                case 'checkin';
+                                $key='checkin'.date('Y-m-d',time());
+                                $content="签到成功";
+                                $touser_info=Redis::zrange($key,0,-1);
+                                if(in_array((string)$toUser,$touser_info)){
+                                    $content="已经签到,不能重复";
+                                }else{
+                                    Redis::zAdd($key,time(),(string)$toUser);
+                                }
+                                $result=$this->text($toUser,$fromUser,$content);
+                                return $result;
+                            }
                         }
                         break;
                         case 'video':
