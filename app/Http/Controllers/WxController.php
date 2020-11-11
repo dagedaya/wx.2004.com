@@ -438,8 +438,12 @@ class WxController extends Controller
 //        echo $data->ToUserName;
 //    }
 //测试下载素材
-    public function dlmedia(){
+    public function test5(){
         $token=$this->access_token();
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=MEDIA_ID";
+        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=iQyRyJg_jFEz6kjSsoaNC6uSyuL3m2vPc7PKUVCoc43QnzB0_ZpTtHwH2ZH_YFaE";
+        $image=file_get_contents($url);
+        $local_path='static/images/mmbiz_jpg';
+        $local=file_put_contents($local_path,$image);
+        var_dump($local);
     }
 }

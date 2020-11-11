@@ -41,6 +41,7 @@ Route::get('/test','WxController@test');
 Route::get('test2','WxController@test2');//get
 Route::post('test3','WxController@test3');//post(form-data)
 Route::post('test4','WxController@test4');//post(raw)
+Route::get('test5','WxController@test5');//测试下载素材
 //测试路由分组 test(prefix)
 Route::prefix('/test')->group(function (){
     Route::get('/guzzle1','TestController@guzzle1');//使用guzzl发送get请求
