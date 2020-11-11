@@ -387,6 +387,11 @@ class WxController extends Controller
             'button'=>[
                 [
                     'type'=>'click',
+                    'name'=>"商城",
+                    'url'=>"http://jd.2004.com/",
+                ],
+                [
+                    'type'=>'click',
                     'name'=>"天气",
                     'key'=>'WEATHER'
                 ],
