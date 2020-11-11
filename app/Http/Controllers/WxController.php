@@ -152,8 +152,7 @@ class WxController extends Controller
                     $media_id=$data->MediaId;
                     $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
                     $image=file_get_contents($url);
-                    $local=$data->PicURL;
-                    $local_path='static/images/'.$local;
+                    $local_path='static/images/大海.jpg';
                     $local=file_put_contents($local_path,$image);
                     if($local){
                         $media=MediaModel::where('media_url',$data->PicUrl)->first();
