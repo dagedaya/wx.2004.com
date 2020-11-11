@@ -219,7 +219,7 @@ class WxController extends Controller
     protected function texthandler($data){
         $data=[
             'add_time'=>$data->CreateTime,
-            'media_type'=>$data->MsgType,
+            'media_type'=>$data->Event,
             'openid'=>$data->FromUserName,
             'msg_id'=>$data->MsgId,
         ];
