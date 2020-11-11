@@ -58,8 +58,6 @@ class WxController extends Controller
                             echo $this->unsubscribehandler($data);
                             exit;
                         }
-//                        }elseif ($data->Event=='voice'){  //voice音频
-//                            $this->voicehandler($data);
 //                        }elseif ($data->Event=='text'){  //text文本
 //                            $this->texthandler($data);
 //                        }elseif ($data->Event=='CLICK'){  //菜单click点击事件
@@ -68,14 +66,11 @@ class WxController extends Controller
 //                            $this->viewhandler($data);
 //                        }
                         break;
-                    case 'video':
-                        $this->videohandler($data);
-                        $content="已存入";
-                        $title="视频";
-                        $description="暂无描述";
-                        echo $this->video($toUser,$fromUser,$content,$title,$description);
-                        exit;
-                    break;
+                        case 'video':
+                            $this->videohandler($data);
+                        break;
+                        case 'voice';
+                            $this->voicehandler($data);
                 }
 
 
@@ -202,16 +197,16 @@ class WxController extends Controller
         ];
         MediaModel::insert($data);
     }
-//    //音频
-//    protected function voicehandler($data){
-//        $data=[
-//            'add_time'=>$data->CreateTime,
-//            'media_type'=>$data->MsgType,
-//            'media_id'=>$data->MediaId,
-//            'msg_id'=>$data->MsgId,
-//        ];
-//        MediaModel::insert($data);
-//    }
+    //音频
+    protected function voicehandler($data){
+        $data=[
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'media_id'=>$data->MediaId,
+            'msg_id'=>$data->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
 //    //文本
 //    protected function texthandler($data){
 //        $data=[
