@@ -148,24 +148,32 @@ class WxController extends Controller
                 //微信素材库(图片)
                 if(strtolower($data->MsgType)=='image'){
                     //下载
-//                    $url="";
-                    $media=MediaModel::where('media_url',$data->PicUrl)->first();
-                    if(empty($media)){
-                        $data=[
-                            'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
-                            'media_type'=>'image',//类型为图片
-                            'add_time'=>time(),
-                            'openid'=>$data->FromUserName,
-                            'media_id'=>$data->MediaId,
-                        ];
-                        MediaModel::insert($data);
-                        $content="图片已存到素材库";
-                    }else{
-                        $content="素材库已经有了";
+                    $token=$this->access_token();
+                    $media_id=$data->MediaId;
+                    $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=$media_id";
+                    $image=file_get_contents($url);
+                    $local_path='static/images/mmbiz_jpg';
+                    $local=file_put_contents($local_path,$image);
+                    if($local){
+                        $media=MediaModel::where('media_url',$data->PicUrl)->first();
+                        if(empty($media)){
+                            $data=[
+                                'media_url'=>$data->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+                                'media_type'=>'image',//类型为图片
+                                'add_time'=>time(),
+                                'openid'=>$data->FromUserName,
+                                'media_id'=>$data->MediaId,
+                            ];
+                            MediaModel::insert($data);
+                            $content="图片已存到素材库";
+                        }else{
+                            $content="素材库已经有了";
+                        }
+                        $result=$this->text($toUser,$fromUser,$content);
+                        return $result;
                     }
-                    $result=$this->text($toUser,$fromUser,$content);
-                    return $result;
-                }
+                    }
+
             }
         } else {
             return false;
@@ -438,12 +446,12 @@ class WxController extends Controller
 //        echo $data->ToUserName;
 //    }
 //测试下载素材
-    public function test5(){
-        $token=$this->access_token();
-        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=iQyRyJg_jFEz6kjSsoaNC6uSyuL3m2vPc7PKUVCoc43QnzB0_ZpTtHwH2ZH_YFaE";
-        $image=file_get_contents($url);
-        $local_path='static/images/mmbiz_jpg';
-        $local=file_put_contents($local_path,$image);
-        var_dump($local);
-    }
+//    public function test5(){
+//        $token=$this->access_token();
+//        $url="https://api.weixin.qq.com/cgi-bin/media/get?access_token=".$token."&media_id=iQyRyJg_jFEz6kjSsoaNC6uSyuL3m2vPc7PKUVCoc43QnzB0_ZpTtHwH2ZH_YFaE";
+//        $image=file_get_contents($url);
+//        $local_path='static/images/mmbiz_jpg';
+//        $local=file_put_contents($local_path,$image);
+//        var_dump($local);
+//    }
 }
