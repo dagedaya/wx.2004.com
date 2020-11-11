@@ -365,7 +365,7 @@ class WxController extends Controller
         Log::info('===='.$content);
         return $content;
     }
-    //上传素材
+    //上传素材了
     public function guzzle2(){
         $access_token=$this->access_token();
         $type="image";
