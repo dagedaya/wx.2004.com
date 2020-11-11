@@ -232,9 +232,11 @@ class WxController extends Controller
                     'media_type'=>$data->MsgType,
                     'media_id'=>$data->MediaId,
                     'msg_id'=>$data->MsgId,
+                    'local_path'=>$local_path,
                 ];
                 MediaModel::insert($video_info);
                 $content="视频已存入素材库";
+//                echo __LINE__;
             }else{
                 $content="素材库已经有了";
             }
