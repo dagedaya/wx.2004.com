@@ -84,7 +84,8 @@ class WxController extends Controller
                         }
                         break;
                         case 'video':
-                            $this->videohandler($data);
+                            $result = $this->videohandler($data);
+                            return $result;
                         break;
                         case 'voice';
                             $this->voicehandler($data);
