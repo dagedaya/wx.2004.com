@@ -57,6 +57,7 @@ class WxController extends Controller
                             echo $this->unsubscribehandler($data);
                             exit;
                         }elseif($data->Event=='CLICK'){  //菜单天气
+                            $this->clickhandler();
                             switch ($data->EventKey){
                                 case 'WEATHER';
                                     $content=$this->weather1();
@@ -89,9 +90,6 @@ class WxController extends Controller
                         break;
                         case 'text';
                             $this->texthandler($data);
-                        break;
-                        case 'CLICK';
-                            $this->clickhandler();
                         break;
                 }
 
