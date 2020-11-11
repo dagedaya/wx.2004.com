@@ -71,6 +71,10 @@ class WxController extends Controller
                         break;
                         case 'voice';
                             $this->voicehandler($data);
+                        break;
+//                        case 'text';
+//                            $this->texthandler($data);
+//                        break;
                 }
 
 
@@ -207,19 +211,21 @@ class WxController extends Controller
         ];
         MediaModel::insert($data);
     }
-//    //文本
-//    protected function texthandler($data){
-//        $data=[
-//            'add_time'=>$data->CreateTime,
-//            'media_type'=>$data->MsgType,
-//            'openid'=>$data->FromUserName,
-//            'msg_id'=>$data->MsgId,
-//        ];
-//        MediaModel::insert($data);
-//    }
+    //文本
+    protected function texthandler($data){
+        $data=[
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'openid'=>$data->FromUserName,
+            'msg_id'=>$data->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
 //    //菜单click点击事件
 //    protected function clickhandler(){
-//
+//        $data=[
+//            ''
+//        ];
 //    }
 //    //菜单view事件
 //    protected function viewhandler(){
